@@ -32,7 +32,7 @@ import UIKit
 	optional func scrollPager(scrollPager: ScrollPager, changedIndex: Int)
 }
 
-@IBDesignable public class ScrollPager: UIView, UIScrollViewDelegate{
+@IBDesignable @objc public class ScrollPager: UIView, UIScrollViewDelegate{
 	
 	private var selectedIndex = 0
 	private let indicatorView = UIView()
@@ -136,6 +136,12 @@ import UIKit
 		addButtons(segmentTitles)
 		redrawComponents()
 	}
+    
+    public func addSegmentsWithTitlesAndViews(segmentTitles: [String],segmentViews: [UIView]) {
+        addButtons(segmentTitles)
+        addViews(segmentViews)
+        redrawComponents()
+    }
 	
 	public func addSegmentsWithImages(segmentImages: [UIImage]) {
 		addButtons(segmentImages)
@@ -252,6 +258,14 @@ import UIKit
 			button.frame = CGRectMake(width * CGFloat(i), 0, width, height)
 			button.setTitleColor((i == selectedIndex) ? selectedTextColor : textColor, forState: .Normal)
 			button.titleLabel?.font = (i == selectedIndex) ? selectedFont : font
+            
+            if i < (buttons.count-1) {
+                let border = CALayer()
+                border.frame = CGRectMake(CGRectGetWidth(button.frame) - 1, 5, 1, CGRectGetHeight(button.frame)-10)
+                border.backgroundColor = UIColor.whiteColor().CGColor
+                button.layer.addSublayer(border)
+                button.layer.masksToBounds = true
+            }
 		}
 	}
 	
